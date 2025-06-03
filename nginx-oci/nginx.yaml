@@ -1,8 +1,9 @@
+# nginx-oci/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx-deployment
-  namespace: lb-apps
+  namespace: lb-apps # Ensure this matches your namespace
   labels:
     app: nginx
 spec:
@@ -14,9 +15,22 @@ spec:
     metadata:
       labels:
         app: nginx
+      annotations:
+        # IMPORTANT: This annotation will trigger a rollout when its value changes.
+        # You must manually update this value (e.g., v1.0.0 to v1.0.1)
+        # whenever you change the `nginx-homepage-configmap.yaml` content.
+        nginx-homepage-configmap-version: "v1.0.0" # <--- UPDATE THIS VALUE TO TRIGGER ROLLOUT
     spec:
       containers:
       - name: nginx
-        image: container-registry.oracle.com/olcne/nginx:1.17.7
+        image: nginx:latest # Or your specific Nginx image
         ports:
         - containerPort: 80
+        volumeMounts:
+        - name: nginx-homepage-volume
+          mountPath: /usr/share/nginx/html/index.html # Standard Nginx web root
+          subPath: index.html # Mounts only the 'index.html' key from the ConfigMap
+      volumes:
+      - name: nginx-homepage-volume
+        configMap:
+          name: nginx-homepage-content # Name of the ConfigMap you created
