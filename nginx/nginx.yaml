@@ -1,10 +1,45 @@
-apiVersion: v1
-kind: Pod
+# nginx/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: nginx
+  name: nginx-deployment
+  namespace: lb-apps # Ensure this matches your namespace
   labels:
-    name: demo
+    app: nginx
 spec:
-  containers:
-  - name: nginx
-    image: nginx
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+      annotations:
+        # This annotation triggers a rollout when the ConfigMap changes
+        # We'll put a dummy value here for now, which Argo CD will manage
+        # A common practice is to use a hash of the ConfigMap content,
+        # or simply increment a version if you prefer manual bumps
+        # If using Kustomize/Helm, this can be automated.
+        # For direct Argo CD sync, you'd typically update this manually
+        # or use a tool that automates it during the Git push.
+        # A simple approach for now:
+        nginx-homepage-configmap-version: "v1.0.0" # CHANGE THIS VALUE TO TRIGGER ROLLOUT
+        # Or better yet, if you have a way to inject a checksum:
+        # checksum/config: {{ .Files.Get "nginx-homepage-configmap.yaml" | sha256sum }} # Example for Helm/Kustomize
+        # For plain YAML, you'd need to manually update this with a new value
+        # like v1.0.1, v1.0.2 etc., or a unique timestamp whenever the ConfigMap changes.
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest # Or your specific Nginx image
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: nginx-homepage-volume
+          mountPath: /usr/share/nginx/html/index.html # Standard Nginx web root
+          subPath: index.html # Mounts only the 'index.html' key from the ConfigMap
+      volumes:
+      - name: nginx-homepage-volume
+        configMap:
+          name: nginx-homepage-content # Name of the ConfigMap you created
