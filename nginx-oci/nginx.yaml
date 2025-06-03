@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: nginx:latest # Or your specific Nginx image
+        image: container-registry.oracle.com/olcne/nginx:1.17.7 # Or your specific Nginx image
         ports:
         - containerPort: 80
         volumeMounts:
