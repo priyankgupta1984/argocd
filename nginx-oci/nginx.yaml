@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  namespace: lb-apps
+  labels:
+    app: nginx
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: container-registry.oracle.com/olcne/nginx:1.17.7
+        ports:
+        - containerPort: 80
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: nginx-service
+  namespace: lb-apps
+  annotations:
+    service.beta.kubernetes.io/oci-load-balancer-subnet1: "ocid1.subnet.oc1.ap-mumbai-1.aaaaaaaaam3vggrdhb3fuwoh4qqazdarktjsll2jdfcbxv4ylrffmpj4rnyq"
+    service.beta.kubernetes.io/oci-load-balancer-security-list-management-mode: "None"
+    service.beta.kubernetes.io/oci-load-balancer-internal: "false"
+    service.beta.kubernetes.io/oci-load-balancer-shape: "flexible"
+    service.beta.kubernetes.io/oci-load-balancer-shape-flex-min: "10"
+    service.beta.kubernetes.io/oci-load-balancer-shape-flex-max: "10"
+spec:
+  selector:
+    app: nginx
+  type: LoadBalancer
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+    protocol: TCP
