@@ -20,11 +20,14 @@ data:
         <h1>Hello from my Argo CD Nginx Deployment!</h1>
         <p>Welcome to OCNE 2.1 CI/CD Demo.</p>
         <p>This page was updated using a ConfigMap.</p>
-        <p>Current time in India: </p>
+        <div class="link-container">
+            <p>Visit: <a href="https://www.oracle.com" target="_blank">Oracle.com</a></p>
+        </div>        
         <form action="https://www.google.com/search" method="get">
           <input type="search" name="q" placeholder="Google Search">
           <button type="submit">Search</button>
         </form>
+        <p>Current time in India: </p>
         <p id="datetime"></p>
         <script>
           var now = new Date();
