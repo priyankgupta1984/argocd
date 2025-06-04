@@ -24,7 +24,7 @@ data:
         <p id="datetime"></p>
         <script>
           var now = new Date();
-          var datetime = now.toLocaleTimeString(); // Or use toLocaleString() for date and time
+          var datetime = now.toLocaleDateString() + " " + now.toLocaleTimeString();
           document.getElementById("datetime").innerHTML = datetime;
         </script>
     </body>
