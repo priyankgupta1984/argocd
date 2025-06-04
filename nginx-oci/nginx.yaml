@@ -19,7 +19,7 @@ spec:
         # IMPORTANT: This annotation will trigger a rollout when its value changes.
         # You must manually update this value (e.g., v1.0.0 to v1.0.1)
         # whenever you change the `nginx-homepage-configmap.yaml` content.
-        nginx-homepage-configmap-version: "v1.0.6" # <--- UPDATE THIS VALUE TO TRIGGER ROLLOUT
+        nginx-homepage-configmap-version: "v1.0.7" # <--- UPDATE THIS VALUE TO TRIGGER ROLLOUT
     spec:
       containers:
       - name: nginx
