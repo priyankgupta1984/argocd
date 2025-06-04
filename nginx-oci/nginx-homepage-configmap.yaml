@@ -21,5 +21,11 @@ data:
         <p>Welcome to OCNE 2.1 CI/CD Demo.</p>
         <p>This page was updated using a ConfigMap.</p>
         <p>Current time in India: June 4, 2025</p>
+        <p id="datetime"></p>
+    <script>
+    var now = new Date();
+    var datetime = now.toLocaleTimeString(); // Or use toLocaleString() for date and time
+    document.getElementById("datetime").innerHTML = datetime;
+    </script>
     </body>
     </html>
