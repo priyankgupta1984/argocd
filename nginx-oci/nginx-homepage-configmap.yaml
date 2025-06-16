@@ -1,9 +1,8 @@
-# nginx-oci/nginx-homepage-configmap.yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: nginx-homepage-content
-  namespace: lb-apps # Assuming your Nginx deployment is in this namespace
+  namespace: lb-apps
 data:
   index.html: |
     <!DOCTYPE html>
