@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-metrics
+  namespace: lb-apps
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "9113"
+spec:
+  selector:
+    app: nginx
+  type: ClusterIP
+  ports:
+  - name: metrics
+    port: 9113
+    targetPort: 9113
+    protocol: TCP
