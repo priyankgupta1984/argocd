@@ -1,9 +1,8 @@
-# nginx-oci/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx-deployment
-  namespace: lb-apps # Ensure this matches your namespace
+  namespace: lb-apps
   labels:
     app: nginx
 spec:
@@ -16,21 +15,31 @@ spec:
       labels:
         app: nginx
       annotations:
-        # IMPORTANT: This annotation will trigger a rollout when its value changes.
-        # You must manually update this value (e.g., v1.0.0 to v1.0.1)
-        # whenever you change the `nginx-homepage-configmap.yaml` content.
-        nginx-homepage-configmap-version: "v1.0.3" # <--- UPDATE THIS VALUE TO TRIGGER ROLLOUT
+        nginx-homepage-configmap-version: "v1.0.4" # Updated to trigger rollout
     spec:
       containers:
       - name: nginx
-        image: container-registry.oracle.com/olcne/nginx:1.17.7 # Or your specific Nginx image
+        image: container-registry.oracle.com/olcne/nginx:1.17.7
         ports:
         - containerPort: 80
         volumeMounts:
         - name: nginx-homepage-volume
-          mountPath: /usr/share/nginx/html/index.html # Standard Nginx web root
-          subPath: index.html # Mounts only the 'index.html' key from the ConfigMap
+          mountPath: /usr/share/nginx/html/index.html
+          subPath: index.html
+        - name: nginx-config-volume
+          mountPath: /etc/nginx/nginx.conf
+          subPath: nginx.conf
+      - name: nginx-prometheus-exporter
+        image: nginx/nginx-prometheus-exporter:latest
+        args:
+        - -nginx.scrape-uri=http://localhost/stub_status
+        ports:
+        - containerPort: 9113
+          name: metrics
       volumes:
       - name: nginx-homepage-volume
         configMap:
-          name: nginx-homepage-content # Name of the ConfigMap you created
+          name: nginx-homepage-content
+      - name: nginx-config-volume
+        configMap:
+          name: nginx-config
