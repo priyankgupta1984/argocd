@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: nginx-metrics
+  namespace: odsc-prometheus
+  labels:
+    release: prometheus # Adjust to match your Prometheus Helm release label
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  namespaceSelector:
+    matchNames:
+    - lb-apps
+  endpoints:
+  - port: metrics
+    path: /metrics
+    interval: 15s
