@@ -30,7 +30,7 @@ spec:
           mountPath: /etc/nginx/nginx.conf
           subPath: nginx.conf
       - name: nginx-prometheus-exporter
-        image: nginx/nginx-prometheus-exporter:latest
+        image: container-registry.oracle.com/olcne_developer/nginx-prometheus-exporter:0.10.0
         args:
         - -nginx.scrape-uri=http://localhost/stub_status
         ports:
