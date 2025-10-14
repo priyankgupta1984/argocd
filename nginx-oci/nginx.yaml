@@ -15,7 +15,7 @@ spec:
       labels:
         app: nginx
       annotations:
-        nginx-homepage-configmap-version: "v1.1.1"
+        nginx-homepage-configmap-version: "v1.1.2"
     spec:
       containers:
       - name: nginx
