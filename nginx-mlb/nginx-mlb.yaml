@@ -29,3 +29,10 @@ spec:
         - name: nginx-config-volume
           mountPath: /etc/nginx/nginx.conf
           subPath: nginx.conf
+      volumes:
+      - name: nginx-homepage-volume
+        configMap:
+          name: nginx-homepage-content
+      - name: nginx-config-volume
+        configMap:
+          name: nginx-homepage-content
