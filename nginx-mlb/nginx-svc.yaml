@@ -3,6 +3,8 @@ kind: Service
 metadata:
   name: nginx-service
   namespace: app
+  labels:
+    app: nginx
 spec:
   selector:
     app: nginx
@@ -11,4 +13,8 @@ spec:
   - name: http
     port: 80
     targetPort: 80
+    protocol: TCP
+  - name: metrics
+    port: 9113
+    targetPort: 9113
     protocol: TCP
