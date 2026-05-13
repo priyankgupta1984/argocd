@@ -29,6 +29,13 @@ spec:
         - name: nginx-config-volume
           mountPath: /etc/nginx/nginx.conf
           subPath: nginx.conf
+      - name: nginx-exporter
+        image: quay.io/nginx/nginx-prometheus-exporter
+        args:
+        - --nginx.scrape-uri=http://127.0.0.1:80/stub_status
+        - --web.listen-address=:9113
+        ports:
+        - containerPort: 9113
       volumes:
       - name: nginx-homepage-volume
         configMap:
