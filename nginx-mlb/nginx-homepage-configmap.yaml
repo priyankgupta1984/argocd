@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: nginx-homepage-content
-  namespace: app
+  namespace: ng-app
 data:
   index.html: |
     <!DOCTYPE html>
